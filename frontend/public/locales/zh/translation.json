@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome to our site",
+  "home": "主页",
+  "games": "游戏页面",
+  "about": "关于页面",
+  "game_rec": "比赛记录",
+  "user_trec": "交易",
+  "update_upassword": "更新密码",
+  "login": "登录",
+  "logout": "注销"
+}

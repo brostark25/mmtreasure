@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome to our site",
+  "home": "Home",
+  "games": "Games",
+  "about": "About",
+  "game_rec": "Record",
+  "user_trec": "Transaction",
+  "update_upassword": "Password",
+  "login": "Login",
+  "logout": "Logout"
+}
