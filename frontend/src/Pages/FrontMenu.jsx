@@ -119,14 +119,16 @@ const FrontMenu = () => {
                   စလော့ဂိမ်း
                 </Link>
               </li>
-              <li>
-                <Link
-                  to={"/login"}
-                  className="text-gray-700 hover:text-blue-500 transition duration-300"
-                >
-                  အကောင့်ဝင်ရန်
-                </Link>
-              </li>
+              {!isLoggedIn && (
+                <li>
+                  <Link
+                    to={"/login"}
+                    className="text-gray-700 hover:text-blue-500 transition duration-300"
+                  >
+                    အကောင့်ဝင်ရန်
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   to={"/contact"}
@@ -135,6 +137,17 @@ const FrontMenu = () => {
                   ဆက်သွယ်ရန်
                 </Link>
               </li>
+
+              {isLoggedIn && (
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-700 hover:text-blue-500 transition duration-300"
+                  >
+                    {t("logout")}
+                  </button>
+                </li>
+              )}
             </ul>
           </nav>
         </div>

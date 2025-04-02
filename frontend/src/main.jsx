@@ -21,6 +21,11 @@ import Live22Page from "./Pages/Live22Page.jsx";
 import SlotGamePage from "./Pages/SlotGamePage.jsx";
 import Lottery2D3D from "./Pages/Lottery2D3D.jsx";
 import ContactPage from "./Pages/ContactPage.jsx";
+import AdminDashboard from "./Admin/AdminDashboard.jsx";
+import AdminUserManagement from "./Admin/AdminUserManagement.jsx";
+import AdminAgentManagement from "./Admin/AdminAgentManagement.jsx";
+import Overview from "./Admin/Overview.jsx";
+import AdminDashboardPage from "./Admin/AdminDashboardPage.jsx";
 // import UserHome from "./Pages/UserHome.jsx";
 
 const router = createBrowserRouter([
@@ -90,6 +95,22 @@ const router = createBrowserRouter([
   {
     path: "contact",
     element: <ContactPage />,
+  },
+  {
+    path: "admin-dash",
+    element: <AdminDashboardPage />,
+  },
+  {
+    path: "admin-userm",
+    element: <AdminUserManagement />,
+  },
+  {
+    path: "admin-agentm",
+    element: <AdminAgentManagement />,
+  },
+  {
+    path: "admin-overview",
+    element: <Overview />,
   },
 ]);
 

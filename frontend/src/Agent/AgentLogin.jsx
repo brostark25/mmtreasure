@@ -26,9 +26,12 @@ const AgentLogin = () => {
       if (response.status === 201) {
         const { token, agent } = response.data;
 
-        if (agent.arole === "Admin" || agent.arole === "Agent") {
+        if (agent.arole === "Agent") {
           localStorage.setItem("token", token);
           navigate("/agent"); // Redirect to the dashboard
+        } else if (agent.arole === "Admin") {
+          localStorage.setItem("token", token);
+          navigate("/admin-dash");
         } else {
           setErrorMessage("Unauthorized access.");
         }

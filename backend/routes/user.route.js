@@ -6,6 +6,7 @@ import {
   checkUser,
   countUser,
   getAllUser,
+  updateUser,
   updateUserActiveStatus,
   updateUserPassword,
   userLogin,
@@ -43,5 +44,6 @@ router.get("/check-uid/:uid", checkUID);
 router.put("/update_upassword", verifyToken, updateUserPassword);
 router.put("/update_user_active_status", verifyToken, updateUserActiveStatus);
 router.get("/user_count", countUser);
+router.put("/update/:uid", updateUser);
 
 export default router;

@@ -186,6 +186,33 @@ export const userLogin = async (req, res) => {
   }
 };
 
+// Update existing user
+export const updateUser = async (req, res) => {
+  const { uid } = req.params;
+  const { username, currency, balance, active } = req.body;
+
+  try {
+    const db = await connectToDatabase();
+
+    // First check if user exists
+    const [user] = await db.query("SELECT * FROM users WHERE uid = ?", [uid]);
+    if (!user || user.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user information
+    await db.query(
+      "UPDATE users SET username = ?, currency = ?, balance = ?, active = ? WHERE uid = ?",
+      [username, currency, balance, active, uid]
+    );
+
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (err) {
+    console.error("Error updating user:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const getAllUser = async (req, res) => {
   try {
     const db = await connectToDatabase();

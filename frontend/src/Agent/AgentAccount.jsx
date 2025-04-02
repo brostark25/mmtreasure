@@ -53,7 +53,7 @@ const AgentAccount = () => {
   const [selectedAgentDetails, setSelectedAgentDetails] = useState(null);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
 
-   // Fetch logged-in agent data to get agent ID
+  // Fetch logged-in agent data to get agent ID
   const fetchLoggedInAgent = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -88,7 +88,6 @@ const AgentAccount = () => {
       console.error("Error fetching agent data:", error);
     }
   };
-
 
   // Fetch Agent data and exclude the logged-in agent
   const fetchAgent = async () => {
@@ -180,13 +179,13 @@ const AgentAccount = () => {
             agentId: agentId,
             userId: selectedUser.uid,
             amount: amountToDistribute,
-			beforeamount: selectedUser.balance,
+            beforeamount: selectedUser.balance,
           }
         : {
             recipientAgentId: selectedAgent.agid,
             agentId: agentId,
             amount: amountToDistribute,
-			beforeamount: selectedAgent.balance,
+            beforeamount: selectedAgent.balance,
           };
 
       const response = await axios.post(endpoint, payload, {
@@ -230,7 +229,7 @@ const AgentAccount = () => {
             loggedInAgentId: agentId,
             userId: selectedUser?.uid,
             amount: parseFloat(amountToWithdraw) || 0,
-            beforeamount: selectedUser?.balance,                                                                
+            beforeamount: selectedUser?.balance,
           }
         : {
             selectedAgentId: selectedAgent?.agid,
@@ -380,7 +379,7 @@ const AgentAccount = () => {
   const handleActiveStatusUpdated = () => {
     console.log("Active status updated successfully!");
   };
-  
+
   // Function to fetch created agents and users for a specific agent
   const fetchAgentDetails = async (agentId) => {
     setIsLoadingDetails(true);
@@ -686,13 +685,17 @@ const AgentAccount = () => {
                     <div>Loading...</div>
                   ) : (
                     <>
-                      <h4 className="text-md font-semibold mb-2">Created Agents</h4>
+                      <h4 className="text-md font-semibold mb-2">
+                        Created Agents
+                      </h4>
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-gray-200">
                             <th className="border p-2">Agent ID</th>
                             <th className="border p-2">Agent Balance</th>
-                            <th className="border p-2">Agent Downline Balance</th>
+                            <th className="border p-2">
+                              Agent Downline Balance
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -706,7 +709,9 @@ const AgentAccount = () => {
                         </tbody>
                       </table>
 
-                      <h4 className="text-md font-semibold mt-4 mb-2">Created Users</h4>
+                      <h4 className="text-md font-semibold mt-4 mb-2">
+                        Created Users
+                      </h4>
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-gray-200">

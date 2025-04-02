@@ -214,6 +214,43 @@ export const agentLogin = async (req, res) => {
   }
 };
 
+// Add this to your agent.controller.js
+export const updateAgent = async (req, res) => {
+  const { agid } = req.params;
+  const { agentname, telephone, active, allPT, gamesPT } = req.body;
+
+  const db = await connectToDatabase();
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // Convert gamesPT object to JSON string if it exists
+    const gamesPTString = gamesPT ? JSON.stringify(gamesPT) : null;
+
+    // Update agent information
+    await connection.execute(
+      `UPDATE agents SET 
+        agentname = ?,
+        telephone = ?,
+        active = ?,
+        allPT = ?,
+        gamesPT = ?
+      WHERE agid = ?`,
+      [agentname, telephone, active, allPT, gamesPTString, agid]
+    );
+
+    await connection.commit();
+    res.status(200).json({ message: "Agent updated successfully" });
+  } catch (err) {
+    await connection.rollback();
+    console.error("Error updating agent:", err);
+    res.status(500).json({ message: "Internal server error" });
+  } finally {
+    connection.release();
+  }
+};
+
 export const agentLogout = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 

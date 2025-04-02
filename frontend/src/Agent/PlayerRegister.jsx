@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
+const PlayerRegister = ({
+  isOpen,
+  onClose,
+  onUserAdded,
+  user,
+  onSave,
+  onUpdate,
+}) => {
   const [values, setValues] = useState({
     uid: "",
-    currency: "",
-    balance: "",
     username: "",
     password: "",
+    currency: "MMK",
+    balance: "",
     active: 1,
     agentreferral: "",
+    status: "Active",
   });
 
   const [agentBalance, setAgentBalance] = useState(null);
-  const [agent, setAgent] = useState(null);
+  const [loggedInAgent, setLoggedInAgent] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAgentData = async () => {
@@ -31,12 +43,14 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
         );
 
         if (response.status === 200) {
-          setAgent(response.data.agent);
+          setAgentBalance(response.data.agent.balance);
+          setLoggedInAgent(response.data.agent.agid);
+
+          // Set agentreferral to the logged-in agent ID
           setValues((prevValues) => ({
             ...prevValues,
             agentreferral: response.data.agent.agid,
           }));
-          // setAgentBalance(response.data.agent.balance);
         }
       } catch (error) {
         console.error("Error fetching agent balance:", error);
@@ -46,11 +60,39 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
     fetchAgentData();
   }, []);
 
-  // Generate a 6-digit random User ID with the prefix "B"
+  // Set form values when user prop changes (edit mode)
+  useEffect(() => {
+    if (user) {
+      setIsEditMode(true);
+      setValues({
+        uid: user.uid,
+        username: user.username,
+        password: "", // Don't show password in edit mode
+        currency: user.currency || "MMK",
+        balance: user.balance,
+        active: user.active,
+        agentreferral: user.agentreferral,
+        status: user.active === 1 ? "Active" : "Inactive",
+      });
+    } else {
+      setIsEditMode(false);
+      // Reset to default values
+      setValues({
+        uid: "",
+        username: "",
+        password: "",
+        currency: "MMK",
+        balance: "",
+        active: 1,
+        agentreferral: loggedInAgent,
+        status: "Active",
+      });
+    }
+  }, [user, loggedInAgent]);
+
   const generateRandomUID = () =>
     `B${Math.floor(100000 + Math.random() * 900000)}`;
 
-  // Check if the generated UID is unique
   const checkUIDUniqueness = async (uid) => {
     try {
       const response = await axios.get(
@@ -63,7 +105,6 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
     }
   };
 
-  // Generate and set a unique UID when the button is clicked
   const handleGenerateUID = async () => {
     let uniqueUIDFound = false;
     let newUID = "";
@@ -77,62 +118,109 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
   };
 
   const handleChanges = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (isEditMode) {
+  //       // Update existing user
+  //       const response = await axios.put(
+  //         `${import.meta.env.VITE_API_URL}/user/users/${values.uid}`,
+  //         {
+  //           username: values.username,
+  //           currency: values.currency,
+  //           balance: values.balance,
+  //           active: values.active,
+  //         }
+  //       );
+
+  //       if (response.status === 200) {
+  //         alert("ကစားသမားအချက်အလက်ပြင်ဆင်မှုအောင်မြင်ပါသည်။");
+  //         onUpdate(); // Refresh the user list
+  //         onClose();
+  //       }
+  //     } else {
+  //       // Create new user
+  //       const response = await axios.post(
+  //         `${import.meta.env.VITE_API_URL}/user/register`,
+  //         values
+  //       );
+
+  //       if (response.status === 201) {
+  //         const newUser = values;
+  //         onUserAdded(newUser);
+  //         alert("ကစားသမားအသစ်ဖန်တီးမှုအောင်မြင်ပါသည်။");
+  //         onClose();
+  //       }
+  //     }
+  //   } catch (err) {
+  //     if (err.response && err.response.status === 409) {
+  //       alert(
+  //         err.response.data.message ||
+  //           "ယခု User ID သို့ နာမည်ဖြင့် Account ရှိပြီးသားဖြစ်နေပါတယ်။ တခြားတစ်ခုပြောင်းပေးပါ။"
+  //       );
+  //     } else {
+  //       console.error("Error during registration:", err);
+  //       alert("လုပ်ဆောင်မှုမအောင်မြင်ပါသဖြင့် နောက်တစ်ခေါက်ကြိုးစားပေးပါ။");
+  //     }
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Step 1: Register the user in your system
-      const userResponse = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/register`,
-        values
-      );
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found");
 
-      if (userResponse.status === 201) {
-        alert("Player successfully created and balance transferred!");
-        onUserAdded(values); // Notify the parent about the new user
-        onClose(); // Close the modal
+      if (isEditMode) {
+        // Update existing user
+        const response = await axios.put(
+          `${import.meta.env.VITE_API_URL}/user/update/${values.uid}`,
+          {
+            username: values.username,
+            currency: values.currency,
+            balance: values.balance,
+            active: values.active,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (response.status === 200) {
+          alert("ကစားသမားအချက်အလက်ပြင်ဆင်မှုအောင်မြင်ပါသည်။");
+          onUpdate(); // Refresh the user list
+          onClose();
+        }
       } else {
-        alert("Player creation failed.");
+        // Create new user
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/user/register`,
+          values,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (response.status === 201) {
+          onUserAdded(values);
+          alert("ကစားသမားအသစ်ဖန်တီးမှုအောင်မြင်ပါသည်။");
+          onClose();
+        }
       }
-
-      // if (userResponse.status === 201) {
-      //   const { uid } = values;
-
-      //   // Step 2: Create the account via the SOAP API
-      //   const createAccountResponse = await axios.post(
-      //     `${import.meta.env.VITE_API_URL}/api/ibet/sportbook/createaccount`,
-      //     { userName: uid }
-      //   );
-
-      //   if (createAccountResponse.data.success) {
-      //     // Step 3: Transfer initial balance
-      //     const transferResponse = await axios.post(
-      //       `${
-      //         import.meta.env.VITE_API_URL
-      //       }/api/ibet/sportbook/transferfundref`,
-      //       {
-      //         userName: uid,
-      //         serial: `${Date.now()}`, // Use a timestamp as a unique serial
-      //         amount: values.balance,
-      //       }
-      //     );
-
-      //     if (transferResponse.data.success) {
-      //       alert("Player successfully created and balance transferred!");
-      //       onUserAdded(values); // Notify the parent about the new user
-      //       onClose(); // Close the modal
-      //     } else {
-      //       alert("Player created, but balance transfer failed.");
-      //     }
-      //   } else {
-      //     alert("Player creation failed.");
-      //   }
-      // }
     } catch (err) {
-      console.error(err);
-      alert("Error during registration or player creation.");
+      if (err.response && err.response.status === 409) {
+        alert(
+          err.response.data.message ||
+            "ယခု User ID သို့ နာမည်ဖြင့် Account ရှိပြီးသားဖြစ်နေပါတယ်။ တခြားတစ်ခုပြောင်းပေးပါ။"
+        );
+      } else {
+        console.error("Error during registration:", err);
+        alert("လုပ်ဆောင်မှုမအောင်မြင်ပါသဖြင့် နောက်တစ်ခေါက်ကြိုးစားပေးပါ။");
+      }
     }
   };
 
@@ -140,21 +228,25 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-md shadow-lg w-full max-w-2xl p-8 relative">
-        <h2 className="text-2xl font-bold mb-6 text-center">Add User</h2>
-        {/* Display Logged-in Agent Balance */}
-        {agent && (
+      <div className="bg-white rounded-md shadow-lg w-full max-w-2xl p-8 relative overflow-auto max-h-[90vh]">
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          {isEditMode ? "ကစားသမားပြင်ဆင်ရန်" : "ကစားသမားအသစ်ထည့်ရန်"}
+        </h2>
+        {!isEditMode && agentBalance !== null && (
           <div className="mb-4">
             <label className="inline text-gray-700 font-semibold mb-2">
-              Current Agent Balance
+              လက်ရှိ Account ပိုင်ရှင်၏ယူနစ်
             </label>
-            <span className="text-green-600 pl-10">{agent.balance}</span>
+            <span className="text-green-600 pl-10">{agentBalance}</span>
           </div>
         )}
-        <form className="grid grid-cols-2 gap-6" onSubmit={handleSubmit}>
+        <form
+          className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          onSubmit={handleSubmit}
+        >
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
-              User ID
+              ကစားသမားအိုင်ဒီ
             </label>
             <input
               type="text"
@@ -162,36 +254,78 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
               value={values.uid}
               onChange={handleChanges}
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              readOnly={isEditMode}
             />
-            <button
-              type="button"
-              onClick={handleGenerateUID}
-              className="mt-2 w-full bg-blue-500 text-white py-1"
-            >
-              Generate User ID
-            </button>
+            {!isEditMode && (
+              <button
+                type="button"
+                onClick={handleGenerateUID}
+                className="mt-2 w-full bg-blue-500 text-white py-1"
+              >
+                ကစားသမားအိုင်ဒီအသစ်ထုတ်ရန်
+              </button>
+            )}
           </div>
-          <div className="mb-4">
-            <label htmlFor="currency" className="block text-gray-700">
-              Currency
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              ကစားသမားအမည်
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={values.username}
+              onChange={handleChanges}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          {!isEditMode && (
+            <>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  ပက်စ်ဝေါ့
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChanges}
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required={!isEditMode}
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  ယခုကစားသမားအသစ်ထဲသို့ထည့်မည့်ယူနစ်ပမာဏ
+                </label>
+                <input
+                  type="text"
+                  name="balance"
+                  value={values.balance}
+                  onChange={handleChanges}
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </>
+          )}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              ငွေကြေးအမျိုးအစား
             </label>
             <select
               name="currency"
-              className="w-full px-3 py-2 border bg-white"
-              onChange={handleChanges}
               value={values.currency}
+              onChange={handleChanges}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="" disabled>
-                Select Currency
-              </option>
               <option value="MMK">MMK</option>
-              {/* <option value="THB">THB</option>
-              <option value="USDT">USDT</option> */}
+              {/* Add other currency options if needed */}
             </select>
           </div>
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
-              Referral Agent
+              ထောက်ခံပေးသောအေးဂျင့်
             </label>
             <input
               type="text"
@@ -201,45 +335,40 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
               className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="balance" className="block text-gray-700">
-              Balance
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Balance"
-              className="w-full px-3 py-2 border"
-              name="balance"
-              onChange={handleChanges}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-700">
-              Username
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Username"
-              className="w-full px-3 py-2 border"
-              name="username"
-              onChange={handleChanges}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="w-full px-3 py-2 border"
-              name="password"
-              onChange={handleChanges}
-            />
-          </div>
+          {isEditMode && (
+            <>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  ယူနစ်ပမာဏ
+                </label>
+                <input
+                  type="text"
+                  name="balance"
+                  value={values.balance}
+                  onChange={handleChanges}
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  ကစားသမားအခြေအနေ
+                </label>
+                <select
+                  name="active"
+                  value={values.active}
+                  onChange={handleChanges}
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value={1}>Active</option>
+                  <option value={0}>Inactive</option>
+                </select>
+              </div>
+            </>
+          )}
 
-          <button className="w-full bg-green-600 text-white py-2">
-            Submit
+          <button className="w-full bg-green-600 text-white py-2 col-span-1 sm:col-span-2">
+            {isEditMode ? "ကစားသမားပြင်ဆင်မည်" : "ကစားသမားအသစ်ဖန်တီးမည်"}
           </button>
         </form>
         <div className="flex justify-end mt-8 space-x-4">
@@ -247,7 +376,7 @@ const PlayerRegister = ({ isOpen, onClose, onUserAdded }) => {
             onClick={onClose}
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
           >
-            Cancel
+            ပယ်ဖျက်မည်
           </button>
         </div>
       </div>

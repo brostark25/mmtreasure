@@ -35,7 +35,7 @@ const UpdatePasswordModal = ({
         endpoint = `${import.meta.env.VITE_API_URL}/admin/update_password`;
         payload = { agid: selectedAgent.agid, newPassword };
       } else {
-        throw new Error("No user or agent selected.");
+        throw new Error("ကစားသမား (သို့) အေးဂျင့်ရွေးချယ်ထားခြင်းမရှိသေးပါ။");
       }
 
       const response = await axios.put(endpoint, payload, {
@@ -43,15 +43,15 @@ const UpdatePasswordModal = ({
       });
 
       if (response.status === 200) {
-        alert("Password updated successfully!");
-        onPasswordUpdated();
+        alert("Password ပြောင်းလဲခြင်းအောင်မြင်ပါသည်။");
+        // onPasswordUpdated();
         onClose();
       } else {
-        throw new Error("Failed to update password.");
+        throw new Error("Password ပြောင်းလဲခြင်းမအောင်မြင်ပါ။");
       }
     } catch (error) {
       console.error("Error updating password:", error);
-      setError("Failed to update password. Please try again.");
+      setError("Password ပြောင်းလဲခြင်းအောင်မြင်ပါသဖြင့် ထပ်မံကြိုးစားပေးပါ။");
     } finally {
       setIsLoading(false);
     }
@@ -66,14 +66,14 @@ const UpdatePasswordModal = ({
     >
       <div className="bg-white rounded-lg p-5 sm:p-6 w-full max-w-md shadow-lg">
         <h2 className="text-lg sm:text-xl font-bold text-center mb-4 text-gray-800">
-          Update Password
+          Password ပြောင်းရန်
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="text-gray-700 text-sm sm:text-base space-y-4">
             <p className="text-justify">
               {selectedUser
-                ? `Updating password for User ID: ${selectedUser.uid}`
-                : `Updating password for Agent ID: ${selectedAgent?.agid}`}
+                ? `ကစားသမားအိုင်ဒီ : ${selectedUser.uid} အတွက် password ပြောင်းလဲမည်။`
+                : `အေးဂျင့်အိုင်ဒီ : ${selectedAgent?.agid} အတွက် password ပြောင်းလဲမည်။`}
             </p>
             <input
               type="password"

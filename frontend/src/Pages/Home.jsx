@@ -165,7 +165,7 @@ const Home = () => {
             <PortfolioSection />
 
             {/* News */}
-            <News />
+            {/* <News /> */}
           </>
         ) : (
           <>

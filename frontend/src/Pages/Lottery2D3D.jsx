@@ -5,7 +5,13 @@ import ComingSoon from "./ComingSoon";
 const Lottery2D3D = () => {
   return (
     <MainLayout>
-      <ComingSoon title="2D/3D" />
+      <ComingSoon
+        pageName="2D/3D"
+        launchDate="2025-04-01"
+        contactEmail="mmtreasure835@gmail.com"
+        contactPhone="+959665912288"
+        location="Myanmar"
+      />
     </MainLayout>
   );
 };

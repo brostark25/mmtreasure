@@ -12,6 +12,7 @@ import {
   // checkPassUpdate,
   getAllAgent,
   transactionrec,
+  updateAgent,
   updateAgentActiveStatus,
   updateAgentPassword,
   withdrawAgentToAgent,
@@ -53,6 +54,8 @@ router.put(
   updateAgentActiveStatus
 );
 router.get("/agent_count", countAgent);
+// Update Agent
+router.put("/agents/:agid", updateAgent);
 
 // router.get("/password_status", authenticateToken, checkPassUpdate);
 
