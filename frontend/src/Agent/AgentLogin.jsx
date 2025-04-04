@@ -46,14 +46,14 @@ const AgentLogin = () => {
     <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700">
       <div className="bg-white w-full max-w-md p-8 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Agent Login
+          အကောင့်ဝင်ရန်
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <input
               type="text"
               name="agid"
-              placeholder="Agent ID"
+              placeholder="အေးဂျင့်အိုင်ဒီ"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={handleChanges}
               required
@@ -63,7 +63,7 @@ const AgentLogin = () => {
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder="ပက်စ်ဝေါ့"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={handleChanges}
               required
@@ -76,12 +76,12 @@ const AgentLogin = () => {
             type="submit"
             className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-all"
           >
-            Login
+            အကောင့်ဝင်မည်
           </button>
         </form>
         <div className="mt-6 text-center">
           <button className="text-indigo-600 hover:underline">
-            <Link to="/">Close</Link>
+            <Link to="/">ပိတ်မည်</Link>
           </button>
         </div>
       </div>

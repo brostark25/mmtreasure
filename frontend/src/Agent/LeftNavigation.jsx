@@ -17,16 +17,24 @@ import axios from "axios";
 
 const LeftNavigation = ({ activeTab, setActiveTab }) => {
   const navigationItems = [
-    { name: "Dashboard", icon: faGauge },
-    { name: "Profile", icon: faUser },
-    { name: "Account", icon: faTable },
-    { name: "iBet Agent", icon: faUserPen },
-    { name: "Win/Lose Report", icon: faChartLine },
-    { name: "Transaction Report", icon: faMoneyBillTransfer },
-    { name: "Score Log", icon: faCalculator },
-    { name: "Game Log", icon: faDiamond },
-    { name: "Action Log", icon: faFile },
-    { name: "Sub Account", icon: faSubscript },
+    { name: "Dashboard", mmname: "ဒက်ဂျ်ဘုတ်ဒ်", icon: faGauge },
+    { name: "Profile", mmname: "ပရိုဖိုင်", icon: faUser },
+    { name: "Account", mmname: "အေးဂျင့်အကောင့်များ", icon: faTable },
+    { name: "iBet Agent", mmname: "iBet Agent", icon: faUserPen },
+    {
+      name: "Win/Lose Report",
+      mmname: "အနိုင်/အရှုံးတင်ပြချက်",
+      icon: faChartLine,
+    },
+    {
+      name: "Transaction Report",
+      mmname: "ငွေသွင်း/ထုတ်တင်ပြချက်",
+      icon: faMoneyBillTransfer,
+    },
+    { name: "Score Log", mmname: "စကိုးလော့ဂျ်", icon: faCalculator },
+    { name: "Game Log", mmname: "ဂိမ်းလော့ဂျ်", icon: faDiamond },
+    { name: "Action Log", mmname: "လုပ်ဆောင်မှုလော့ဂျ်", icon: faFile },
+    { name: "Sub Account", mmname: "အကောင့်ခွဲ", icon: faSubscript },
   ];
 
   const handleLogout = async () => {
@@ -71,7 +79,7 @@ const LeftNavigation = ({ activeTab, setActiveTab }) => {
               onClick={() => setActiveTab(item.name)}
             >
               <FontAwesomeIcon icon={item.icon} />
-              <span className="text-sm">{item.name}</span>
+              <span className="text-sm">{item.mmname}</span>
             </li>
           ))}
           <li
@@ -79,7 +87,7 @@ const LeftNavigation = ({ activeTab, setActiveTab }) => {
             onClick={handleLogout}
           >
             <FontAwesomeIcon icon={faSignOutAlt} />
-            <span className="text-sm">Logout</span>
+            <span className="text-sm">အကောင့်ထွက်မည်</span>
           </li>
         </ul>
       </nav>

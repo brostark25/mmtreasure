@@ -43,9 +43,9 @@ const MainContent = ({ activeTab }) => {
     <div className="flex-1 bg-gray-100 p-6">
       <div className="flex justify-between items-center mb-6">
         <div className="text-2xl font-bold">{activeTab}</div>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
           Language
-        </button>
+        </button> */}
       </div>
 
       <div className="bg-white shadow-md rounded-md">{renderContent()}</div>

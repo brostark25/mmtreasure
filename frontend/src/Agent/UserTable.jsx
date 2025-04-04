@@ -24,25 +24,28 @@ const UserTable = ({
   return (
     <div className="bg-white shadow-md rounded-md p-4">
       <div className="flex flex-wrap justify-between items-center mb-4">
-        <h2 className="text-lg sm:text-xl font-bold">User</h2>
+        <h2 className="text-lg sm:text-xl font-bold">ကစားသမားများ</h2>
         <button
           onClick={onAddUser}
-          className="bg-blue-500 text-white px-3 py-2 rounded-md"
+          className="bg-blue-500 text-white px-3 py-2 rounded-md flex items-center space-x-2"
         >
-          Add User
+          <FontAwesomeIcon icon={faPlus} />
+          <span>ကစားသမားအသစ်ဖွင့်ရန်</span>
         </button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-200 text-xs sm:text-sm">
-              <th className="border p-2">User ID</th>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Currency</th>
-              <th className="border p-2">Balance</th>
-              <th className="border p-2">Function</th>
-              <th className="border p-2">Status</th>
-              <th className="border p-2">Last Login/Created Time</th>
+              <th className="border p-2">ကစားသမားအိုင်ဒီ</th>
+              <th className="border p-2">အမည်</th>
+              <th className="border p-2">ငွေကြေး</th>
+              <th className="border p-2">ယူနစ်ပမာဏ</th>
+              <th className="border p-2">လုပ်ဆောင်ချက်များ</th>
+              <th className="border p-2">အခြေအနေ</th>
+              <th className="border p-2">
+                နောက်ဆုံးဝင်သည့်အချိန်/စတင်သောအချိန်
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -105,7 +108,7 @@ const UserTable = ({
         </table>
       </div>
       <button className="text-blue-500 mt-4" onClick={onShowAllUsers}>
-        More...
+        နောက်ထပ်...
       </button>
     </div>
   );

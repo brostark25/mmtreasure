@@ -53,26 +53,28 @@ const AgentTable = ({
   return (
     <div className="bg-white shadow-md rounded-md p-4">
       <div className="flex flex-wrap justify-between items-center mb-4">
-        <h2 className="text-lg sm:text-xl font-bold">Agent</h2>
+        <h2 className="text-lg sm:text-xl font-bold">အေးဂျင့်</h2>
         <button
           onClick={onAddAgent}
           className="bg-blue-500 text-white px-3 py-2 rounded-md flex items-center space-x-2"
         >
           <FontAwesomeIcon icon={faPlus} />
-          <span>Add Agent</span>
+          <span>အေးဂျင့်အသစ်ဖွင့်ရန်</span>
         </button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-200 text-xs sm:text-sm">
-              <th className="border p-2">Agent ID</th>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Your Balance</th>
-              <th className="border p-2">Downline Balance</th>
-              <th className="border p-2">Function</th>
-              <th className="border p-2">Status</th>
-              <th className="border p-2">Last Login/Created Time</th>
+              <th className="border p-2">အေးဂျင့်အိုင်ဒီ</th>
+              <th className="border p-2">အမည်</th>
+              <th className="border p-2">ယူနစ်ပမာဏ</th>
+              <th className="border p-2">Downline ဃူနစ်ပမာဏ</th>
+              <th className="border p-2">လုပ်ဆောင်ချက်များ</th>
+              <th className="border p-2">အခြေအနေ</th>
+              <th className="border p-2">
+                နောက်ဆုံးဝင်သည့်အချိန်/စတင်သောအချိန်
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -137,26 +139,28 @@ const AgentTable = ({
         </table>
       </div>
       <button className="text-blue-500 mt-4" onClick={onShowAllAgents}>
-        More...
+        နောက်ထပ် ...
       </button>
 
       {/* Display created agents and users for the selected agent */}
       {selectedAgentDetails && (
         <div className="mt-6">
           <h3 className="text-lg font-bold mb-4">
-            Created Agents and Users
+            ပြုလုပ်ပေးခဲ့သည့်အေးဂျင့်များနှင့်ကစားသမားများ
           </h3>
           {isLoadingDetails ? (
             <div>Loading...</div>
           ) : (
             <>
-              <h4 className="text-md font-semibold mb-2">Created Agents</h4>
+              <h4 className="text-md font-semibold mb-2">
+                ပြုလုပ်ပေးခဲ့သည့်အေးဂျင့်များ
+              </h4>
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-200">
-                    <th className="border p-2">Agent ID</th>
-                     <th className="border p-2">Agent Balance</th>
-                     <th className="border p-2">Agent Downline Balance</th>
+                    <th className="border p-2">အေးဂျင့်အိုင်ဒီ</th>
+                    <th className="border p-2">အေးဂျင့်ယူနစ်ပမာဏ</th>
+                    <th className="border p-2">အေးဂျင့် Downline ယူနစ်ပမာဏ</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -170,12 +174,14 @@ const AgentTable = ({
                 </tbody>
               </table>
 
-              <h4 className="text-md font-semibold mt-4 mb-2">Created Players</h4>
+              <h4 className="text-md font-semibold mt-4 mb-2">
+                ပြုလုပ်ပေးခဲ့သည့်ကစားသမားများ
+              </h4>
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-200">
-                    <th className="border p-2">Player ID</th>
-                    <th className="border p-2">Player Balance</th>
+                    <th className="border p-2">ကစားသမားအိုင်ဒီ</th>
+                    <th className="border p-2">ကစားသမားယူနစ်ပမာဏ</th>
                   </tr>
                 </thead>
                 <tbody>

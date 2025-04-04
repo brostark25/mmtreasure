@@ -111,7 +111,7 @@ const AgentAccount = () => {
         setAllAgents(filteredAgents);
       }
     } catch (error) {
-      alert("Failed to fetch agents data. Please try again.");
+      alert("အေးဂျင့်အချက်အလက်များရယူခြင်းမအောင်မြင်၍ထပ်မံကြိုးစားပေးပါ။");
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +138,7 @@ const AgentAccount = () => {
         setAllUsers(filteredUsers);
       }
     } catch (error) {
-      alert("Failed to fetch user data. Please try again.");
+      alert("ကစားသမားအချက်အလက်များရယူခြင်းမအောင်မြင်၍ထပ်မံကြိုးစားပေးပါ။");
     } finally {
       setIsLoading(false);
     }
@@ -160,7 +160,7 @@ const AgentAccount = () => {
   const handleDistributeBalance = async () => {
     if ((!selectedUser && !selectedAgent) || !amountToDistribute) {
       alert(
-        "Please select a recipient (user or agent), and enter a distribution amount."
+        "ကျေးဇူးပြုပြီး လက်ခံမည့် အေးဂျင့်(သို့)ကစားသမားရွေးပြီး လွှဲလိုသည့်ယူနစ်ပမာဏထည့်ပေးပါ။"
       );
       return;
     }
@@ -193,11 +193,11 @@ const AgentAccount = () => {
       });
 
       if (response.status === 200) {
-        alert("Balance distributed successfully!");
+        alert("ယူနစ်ဖြည့်ခြင်းအောင်မြင်ပါသည်");
         setIsBalanceModalOpen(false);
         setAgIsBalanceModalOpen(false);
       } else {
-        alert("Failed to distribute balance. Please try again.");
+        alert("ယူနစ်ဖြည့်ခြင်းမအောင်မြင်ပါသဖြင့်ထပ်မံကြိုးစားပေးပါ။");
       }
     } catch (error) {
       alert("An error occurred while distributing balance.");
@@ -206,12 +206,12 @@ const AgentAccount = () => {
 
   const handleWithdrawBalance = async () => {
     if (!selectedUser && !selectedAgent) {
-      alert("Please select a user or agent to withdraw from.");
+      alert("ကျေးဇူးပြုပြီး ယူနစ်ထုတ်မည့် ကစားသမား(သို့)အေးဂျင့်ရွေးပေးပါ။");
       return;
     }
 
     if (!amountToWithdraw || isNaN(amountToWithdraw) || amountToWithdraw <= 0) {
-      alert("Please enter a valid withdrawal amount.");
+      alert("ကျေးဇူးပြု၍ ထုတ်ယူလိုသည့် မှန်ကန်သောယူနစ်ပမာဏထည့်သွင်းပေးပါ။");
       return;
     }
 
@@ -244,12 +244,14 @@ const AgentAccount = () => {
 
       if (response.status === 200) {
         alert(
-          "Withdrawal successful! The amount has been added to your balance."
+          "ယူနစ်ထုတ်ခြင်း အောင်မြင်ပါသည်၊ ထုတ်ယူလိုက်သော ယူနစ်ပမာဏကို သင်၏ယူနစ်ပမာဏထဲပေါင်းထည့်ပေးပြီးပါပြီ။"
         );
         setIsWithBalanceModalOpen(false);
         setAgIsWithBalanceModalOpen(false);
       } else {
-        alert("Failed to withdraw balance. Please try again.");
+        alert(
+          "ယူနစ်ထုတ်ခြင်းမအောင်မြင်ပါသဖြင့် နောက်တစ်ကြိမ်ထပ်မံကြိုးစားပေးပါ။"
+        );
       }
     } catch (error) {
       console.error("Withdrawal error:", error.response?.data || error.message);
@@ -400,7 +402,9 @@ const AgentAccount = () => {
       }
     } catch (error) {
       console.error("Error fetching agent details:", error);
-      alert("Failed to fetch agent details. Please try again.");
+      alert(
+        "အေးဂျင့်အချက်အလက်များရယူခြင်းမအောင်မြင်ပါသဖြင့် နောက်တစ်ကြိမ်ထပ်မံကြိုးစားပေးပါ။"
+      );
     } finally {
       setIsLoadingDetails(false);
     }
@@ -478,14 +482,14 @@ const AgentAccount = () => {
       <BalanceModal
         isOpen={isBalanceModalOpen}
         onClose={() => setIsBalanceModalOpen(false)}
-        title="Distribute Balance"
-        fromLabel="From Agent ID"
+        title="ယူနစ်ထည့်သွင်းရန်"
+        fromLabel="အေးဂျင့်အိုင်ဒီမှ"
         fromValue={agentId}
-        valuefromLable="Agent Balance"
+        valuefromLable="အေးဂျင့်ယူနစ်ပမာဏ"
         valuefrom={agentBalance}
-        toLabel="To User ID"
+        toLabel="ကစားသမားအိုင်ဒီဆီသို့"
         toValue={selectedUser?.uid}
-        valuetoLable="User Balance"
+        valuetoLable="ကစားသမားယူနစ်ပမာဏ"
         valueto={selectedUser?.balance}
         amount={amountToDistribute}
         onAmountChange={setAmountToDistribute}
@@ -496,14 +500,14 @@ const AgentAccount = () => {
       <BalanceModal
         isOpen={isAgBalanceModalOpen}
         onClose={() => setAgIsBalanceModalOpen(false)}
-        title="Distribute Balance"
-        fromLabel="From Agent ID"
+        title="ယူနစ်ထည့်သွင်းရန်"
+        fromLabel="အေးဂျင့်အိုင်ဒီမှ"
         fromValue={agentId}
-        valuefromLable="From Agent Balance"
+        valuefromLable="အေးဂျင့်ယူနစ်ပမာဏမှ"
         valuefrom={agentBalance}
-        toLabel="To Agent ID"
+        toLabel="အေးဂျင့်အိုင်ဒီဆီသို့"
         toValue={selectedAgent?.agid}
-        valuetoLable="To Agent Balance"
+        valuetoLable="အေးဂျင့်ယူနစ်ပမာဏသို့"
         valueto={selectedAgent?.balance}
         amount={amountToDistribute}
         onAmountChange={setAmountToDistribute}
@@ -514,14 +518,14 @@ const AgentAccount = () => {
       <BalanceModal
         isOpen={isWithBalanceModalOpen}
         onClose={() => setIsWithBalanceModalOpen(false)}
-        title="Withdraw Balance"
-        fromLabel="From User ID"
+        title="ယူနစ်ထုတ်ရန်"
+        fromLabel="ကစားသမားအိုင်ဒီမှ"
         fromValue={selectedUser?.uid}
-        valuefromLable="User Balance"
+        valuefromLable="ကစားသမားယူနစ်ပမာဏ"
         valuefrom={selectedUser?.balance}
-        toLabel="To Agent ID"
+        toLabel="အေးဂျင့်အိုင်ဒီသို့"
         toValue={agentId}
-        valuetoLable="Agent Balance"
+        valuetoLable="အေးဂျင့်ယူနစ်ပမာဏ"
         valueto={agentBalance}
         amount={amountToWithdraw}
         onAmountChange={setAmountToWithdraw}
@@ -532,14 +536,14 @@ const AgentAccount = () => {
       <BalanceModal
         isOpen={isAgIsWithBalanceModalOpen}
         onClose={() => setAgIsWithBalanceModalOpen(false)}
-        title="Withdraw Balance"
-        fromLabel="From Agent ID"
+        title="ယူနစ်ထုတ်ရန်"
+        fromLabel="အေးဂျင့်အိုင်ဒီမှ"
         fromValue={selectedAgent?.agid}
-        valuefromLable="From Agent Balance"
+        valuefromLable="အေးဂျင့်ယူနစ်ပမာဏမှ"
         valuefrom={selectedAgent?.balance}
-        toLabel="To Agent ID"
+        toLabel="အေးဂျင့်အိုင်ဒီသို့"
         toValue={agentId}
-        valuetoLable="To Agent Balance"
+        valuetoLable="အေးဂျင့်ယူနစ်ပမာဏသို့"
         valueto={agentBalance}
         amount={amountToWithdraw}
         onAmountChange={setAmountToWithdraw}
@@ -589,7 +593,7 @@ const AgentAccount = () => {
           >
             {/* Modal content */}
             <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">
-              All Agents
+              အေးဂျင့်များ
             </h2>
             <div
               className="overflow-auto flex-1"
@@ -598,13 +602,15 @@ const AgentAccount = () => {
               <table className="w-full text-left border-collapse text-sm sm:text-base">
                 <thead>
                   <tr className="bg-gray-200">
-                    <th className="border p-2">Agent ID</th>
-                    <th className="border p-2">Name</th>
-                    <th className="border p-2">Your Balance</th>
-                    <th className="border p-2">Downline Balance</th>
-                    <th className="border p-2">Function</th>
-                    <th className="border p-2">Status</th>
-                    <th className="border p-2">Last Login/Created Time</th>
+                    <th className="border p-2">အေးဂျင့်အိုင်ဒီ</th>
+                    <th className="border p-2">အမည်</th>
+                    <th className="border p-2">အေးဂျင့်ယူနစ်ပမာဏ</th>
+                    <th className="border p-2">Downline ယူနစ်ပမာဏ</th>
+                    <th className="border p-2">လုပ်ဆောင်ချက်များ</th>
+                    <th className="border p-2">အခြေအနေ</th>
+                    <th className="border p-2">
+                      နောက်ဆုံးဝင်သည့်အချိန်/အကောင့်စတင်ဖွင့်သည့်နေ့
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -679,22 +685,22 @@ const AgentAccount = () => {
               {selectedAgentDetails && (
                 <div className="mt-6">
                   <h3 className="text-lg font-bold mb-4">
-                    Created Agents and Users
+                    ပြုလုပ်ပေးခဲ့သည့် အေးဂျင့်နှင့်ကစားသမားများ
                   </h3>
                   {isLoadingDetails ? (
                     <div>Loading...</div>
                   ) : (
                     <>
                       <h4 className="text-md font-semibold mb-2">
-                        Created Agents
+                        ပြုလုပ်ပေးခဲ့သည့်အေးဂျင့်များ
                       </h4>
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-gray-200">
-                            <th className="border p-2">Agent ID</th>
-                            <th className="border p-2">Agent Balance</th>
+                            <th className="border p-2">အေးဂျင့်အိုင်ဒီ</th>
+                            <th className="border p-2">အေးဂျင့်ယူနစ်ပမာဏ</th>
                             <th className="border p-2">
-                              Agent Downline Balance
+                              အေးဂျင့် Downline ယူနစ်ပမာဏ
                             </th>
                           </tr>
                         </thead>
@@ -710,13 +716,13 @@ const AgentAccount = () => {
                       </table>
 
                       <h4 className="text-md font-semibold mt-4 mb-2">
-                        Created Users
+                        ပြုလုပ်ပေးခဲ့သည့် ကစားသမားများ
                       </h4>
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-gray-200">
-                            <th className="border p-2">Player ID</th>
-                            <th className="border p-2">Player Balance</th>
+                            <th className="border p-2">ကစားသမားအိုင်ဒီ</th>
+                            <th className="border p-2">ကစားသမားယူနစ်ပမာဏ</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -737,7 +743,7 @@ const AgentAccount = () => {
               className="bg-red-500 text-white px-4 py-2 mt-4 rounded-md w-full sm:w-auto"
               onClick={() => setIsAllAgentModalOpen(false)}
             >
-              Close
+              ပိတ်မည်
             </button>
           </div>
         </div>
@@ -758,7 +764,7 @@ const AgentAccount = () => {
           >
             {/* Modal content */}
             <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">
-              All Users
+              ကစားသမားများ
             </h2>
             <div
               className="overflow-auto flex-1"
@@ -767,13 +773,13 @@ const AgentAccount = () => {
               <table className="w-full text-left border-collapse text-sm sm:text-base">
                 <thead>
                   <tr className="bg-gray-200">
-                    <th className="border p-2">User ID</th>
-                    <th className="border p-2">Name</th>
-                    <th className="border p-2">Currency</th>
-                    <th className="border p-2">Balance</th>
-                    <th className="border p-2">Status</th>
-                    <th className="border-p-2">Function</th>
-                    <th className="border p-2">Created Time</th>
+                    <th className="border p-2">ကစားသမားအိုင်ဒီ</th>
+                    <th className="border p-2">အမည်</th>
+                    <th className="border p-2">ငွေကြေး</th>
+                    <th className="border p-2">ယူနစ်</th>
+                    <th className="border p-2">အခြေအနေ</th>
+                    <th className="border-p-2">လုပ်ဆောင်ချက်များ</th>
+                    <th className="border p-2">စတင်သောအချိန်</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -850,7 +856,7 @@ const AgentAccount = () => {
               className="bg-red-500 text-white px-4 py-2 mt-4 rounded-md w-full sm:w-auto"
               onClick={() => setIsAllUserModalOpen(false)}
             >
-              Close
+              ပိတ်မည်
             </button>
           </div>
         </div>

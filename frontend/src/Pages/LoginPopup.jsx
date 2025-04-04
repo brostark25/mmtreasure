@@ -58,20 +58,20 @@ const LoginPopup = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-slate-900 w-80 p-8 rounded-lg shadow-lg text-center">
-        <h2 className="text-2xl font-bold mb-4 text-white">Login</h2>
+        <h2 className="text-2xl font-bold mb-4 text-white">လော့အင်</h2>
         {error && <p className="mb-4 text-red-500 text-sm">{error}</p>}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="uid"
-            placeholder="User ID"
+            placeholder="ကစားသမားအိုင်ဒီ"
             className="w-full p-2 mb-4 border border-gray-300 rounded"
             onChange={handleChanges}
           />
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="ပက်စ်ဝေါ့"
             className="w-full p-2 mb-4 border border-gray-300 rounded"
             onChange={handleChanges}
           />
@@ -79,11 +79,11 @@ const LoginPopup = () => {
             type="submit"
             className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Login
+            အကောင့်ဝင်မည်
           </button>
         </form>
         <button className="mt-4 text-blue-600 hover:underline">
-          <Link to="/">Close</Link>
+          <Link to="/">ပိတ်မည်</Link>
         </button>
       </div>
     </div>
